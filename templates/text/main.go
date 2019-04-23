@@ -7,10 +7,16 @@ import (
 	"text/template"
 )
 
+var tplMust *template.Template
+
+func init() {
+	tplMust = template.Must(template.ParseGlob("files/*"))
+}
+
 func main() {
 
 	//########## One ##########
-	tpl, err := template.ParseFiles("templates/hello.gohtml")
+	tpl, err := template.ParseFiles("templates/text/hello.gohtml")
 	if err != nil{
 		log.Fatalln(err)
 	}
@@ -97,6 +103,31 @@ func main() {
 	}
 
 	err = tplFilesGlob.ExecuteTemplate(os.Stdout,"two.gohtml", nil)
+	if err != nil{
+		log.Fatalln("Passo 4 - ", err)
+	}
+
+	err = tplFilesGlob.ExecuteTemplate(os.Stdout,"one.gohtml", nil)
+	if err != nil{
+		log.Fatalln("Passo 5 - ", err)
+	}
+
+	fmt.Println("")
+	fmt.Println("------------five------------")
+	fmt.Println("")
+
+	//########## five ##########
+	err = tplFilesGlob.Execute(os.Stdout, nil)
+	if err != nil{
+		log.Fatalln("Passo 1 - ", err)
+	}
+
+	err = tplFilesGlob.ExecuteTemplate(os.Stdout,"two.gohtml", nil)
+	if err != nil{
+		log.Fatalln("Passo 3 - ", err)
+	}
+
+	err = tplFilesGlob.ExecuteTemplate(os.Stdout,"three.gohtml", nil)
 	if err != nil{
 		log.Fatalln("Passo 4 - ", err)
 	}
